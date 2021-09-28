@@ -17,6 +17,11 @@ export default class TreeContainer extends React.PureComponent {
 		setActiveNode(node);
 	}
 
+	onRightClick(event, nodeKey) {
+		event.preventDefault();
+		alert(`There is the details for ${nodeKey}`);
+	}
+	
 	getRoot(json) {
 		if (json.name === this.props.activeNode) {
 			return json;
@@ -81,7 +86,8 @@ export default class TreeContainer extends React.PureComponent {
 				width={this.props.width}
 				gProps={{
 					className: 'node',
-					onClick: this.handleClick
+					onClick: this.handleClick,
+					onContextMenu: this.onRightClick
 				}}
 				textProps={{
 					dy: 3.5

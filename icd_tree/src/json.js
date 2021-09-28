@@ -1,59 +1,66 @@
 export default {
 
-	name: 'I',
+	name: 'ICD-10',
 	children: [{
-		name: 'I00',
+		name: 'A',
 		children: []
 	}, {
-		name: 'I01',
+		name: 'B',
 		children: [{
-			name: 'I01.0',
+			name: 'B01',
+			details: 'This is detail for BO1',
 			children: [{
-				name: 'I01.00',
-				children: []
+				name: 'B01.0',
+				children: [{
+					name: 'B01.01',
+					children: []
+				}, {
+					name: 'B01.02',
+					children: []
+				}]
 			}, {
-				name: 'I01.01',
+				name: 'B01.1',
 				children: []
 			}]
 		}, {
-			name: 'I01.1',
+			name: 'B02',
 			children: []
 		}, {
-			name: 'I01.2',
+			name: 'B03',
 			children: []
 		}, {
-			name: 'I01.3',
+			name: 'B04',
 			children: []
 		}]
 	}, {
-		name: 'I02',
+		name: 'C',
 		children: []
 	}, {
-		name: 'I03',
+		name: 'D',
 		children: [{
-			name: 'I03.0',
+			name: 'D01',
 			children: []
 		}, {
-			name: 'I03.1',
+			name: 'D02',
 			children: []
 		}]
 	}, {
-		name: 'I04',
+		name: 'H',
 		children: [{
-			name: 'I04.0',
+			name: 'H01',
 			children: []
 		}, {
-			name: 'I04.1',
+			name: 'H02',
 			children: []
 		}, {
-			name: 'I04.2',
+			name: 'H03',
 			children: []
 		}]
 	}, {
-		name: 'I05',
+		name: 'I',
 		children: []
 	}, {
-		name: 'I06',
+		name: 'J',
 		children: []
 	}]
 };

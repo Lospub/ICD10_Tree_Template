@@ -18,11 +18,16 @@ export default class Header extends React.PureComponent {
 		setFilter('');
 	}
 
+	// handleUpload() {
+	// 	alert(`This is the feature for upload CSV file`);
+	// }
+
 	render() {
 		return (
 			<div id="header">
 				<Filter filter={this.props.filter}/>
 				<button onClick={this.handleClick}>Reset</button>
+				{/* <button onClick={this.handleClick}>Upload CSV</button> */}
 				<span>Last Updated: {this.props.timestamp}</span>
 			</div>);
 	}
