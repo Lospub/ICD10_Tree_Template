@@ -4,6 +4,7 @@ import ReactDom from 'react-dom';
 import $ from 'jquery';
 import Header from './components/header';
 import TreeContainer from './components/treeContainer';
+import data_json from './data_json';
 import json from './json';
 import Store from './Reducers/store';
 import { connect, Provider } from 'react-redux';
@@ -27,6 +28,7 @@ class App extends React.PureComponent {
 				<Header filter={this.props.filter} timestamp={Date().toLocaleString()}/>
 				<TreeContainer
 					activeNode={this.props.activeNode}
+					info={data_json}
 					data={json}
 					filter={this.props.filter}
 					height={this.props.height}

@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Tree from 'react-tree-graph';
 import { setActiveNode } from '../Reducers/actions';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
 const propTypes = {
 	activeNode: PropTypes.string,
+	info: PropTypes.object,
 	data: PropTypes.object,
 	filter: PropTypes.string,
 	height: PropTypes.number,
@@ -17,9 +20,57 @@ export default class TreeContainer extends React.PureComponent {
 		setActiveNode(node);
 	}
 
-	onRightClick(event, nodeKey) {
+	DetailsAlert = (node, info) => {
+		let code_desp = '';
+		let category_desp = '';
+		let section_desp = '';
+		let chapter_desp = '';
+		let AUROC = '';
+		let AUPRC = '';
+		let AP = '';
+		for (let i = 0; i < info.data.length; i++){
+			if (info.data[i].label == node) {
+				code_desp = info.data[i].code_desp;
+				category_desp = info.data[i].category_desp;
+				section_desp = info.data[i].section_desp;
+				chapter_desp = info.data[i].chapter_desp;
+				AUROC = info.data[i].AUROC;
+				AUPRC = info.data[i].AUPRC;
+				AP = info.data[i].AP;
+				confirmAlert({
+					customUI: ({ onClose }) => {
+						return (
+						  <div className='custom-ui'>
+							<h1>Details for {node}</h1>
+							<h2>code_desp: {code_desp}</h2>
+							<h2>category_desp: {category_desp}</h2>
+							<h2>section_desp: {section_desp}</h2>
+							<h2>chapter_desp: {chapter_desp}</h2>
+							<h2>AUROC: {AUROC}</h2>
+							<h2>AUPRC: {AUPRC}</h2>
+							<h2>AP: {AP}</h2>
+							<button onClick={onClose}>CLOSE</button>
+						  </div>
+						)
+					  }
+					})
+			}else{
+				confirmAlert({
+					title: `Details for ${node}`,
+					message: `There is no data for this node.`,
+					buttons: [
+					  {
+						label: 'Close',
+					  },
+					]
+				  })
+			}
+		}
+	}
+
+	onRightClick = (event, nodeKey) => {
 		event.preventDefault();
-		alert(`There is the details for ${nodeKey}`);
+		this.DetailsAlert(nodeKey, this.props.info);
 	}
 	
 	getRoot(json) {
