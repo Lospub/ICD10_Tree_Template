@@ -5,11 +5,12 @@ import Tree from 'react-tree-graph';
 import { setActiveNode } from '../Reducers/actions';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
+import { data_jsons, json } from './header';
 
 const propTypes = {
 	activeNode: PropTypes.string,
-	info: PropTypes.object,
-	data: PropTypes.object,
+	// info: PropTypes.object,
+	// data: PropTypes.object,
 	filter: PropTypes.string,
 	height: PropTypes.number,
 	width: PropTypes.number
@@ -21,23 +22,23 @@ export default class TreeContainer extends React.PureComponent {
 	}
 
 	DetailsAlert = (node, info) => {
-		let code_desp = '';
-		let category_desp = '';
-		let section_desp = '';
-		let chapter_desp = '';
-		let AUROC = '';
-		let AUPRC = '';
-		let AP = '';
-		for (let i = 0; i < info.data.length; i++){
-			if (info.data[i].label == node) {
-				code_desp = info.data[i].code_desp;
-				category_desp = info.data[i].category_desp;
-				section_desp = info.data[i].section_desp;
-				chapter_desp = info.data[i].chapter_desp;
-				AUROC = info.data[i].AUROC;
-				AUPRC = info.data[i].AUPRC;
-				AP = info.data[i].AP;
-				confirmAlert({
+		for (let i = 0; i < info._data.length; i++){
+			let code_desp = '';
+			let category_desp = '';
+			let section_desp = '';
+			let chapter_desp = '';
+			let AUROC = '';
+			let AUPRC = '';
+			let AP = '';
+			if (info._data[i].label == node) {
+				code_desp = info._data[i].code_desp;
+				category_desp = info._data[i].category_desp;
+				section_desp = info._data[i].section_desp;
+				chapter_desp = info._data[i].chapter_desp;
+				AUROC = info._data[i].AUROC;
+				AUPRC = info._data[i].AUPRC;
+				AP = info._data[i].AP;
+				return confirmAlert({
 					customUI: ({ onClose }) => {
 						return (
 						  <div className='custom-ui'>
@@ -54,23 +55,38 @@ export default class TreeContainer extends React.PureComponent {
 						)
 					  }
 					})
-			}else{
-				confirmAlert({
-					title: `Details for ${node}`,
-					message: `There is no data for this node.`,
-					buttons: [
-					  {
-						label: 'Close',
-					  },
-					]
-				  })
+			}else if (info._data[i].chapter_desp == node){
+				section_desp = info._data[i].section_desp;
+				return confirmAlert({
+					customUI: ({ onClose }) => {
+						return (
+						  <div className='custom-ui'>
+							<h1>Details for {node}</h1>
+							<h2>section_desp: {section_desp}</h2>
+							<button onClick={onClose}>CLOSE</button>
+						  </div>
+						)
+					  }
+					})
+			}else if (node == "ICD-10"){
+				return confirmAlert({
+					customUI: ({ onClose }) => {
+						return (
+						  <div className='custom-ui'>
+							<h1 style={{marginLeft:100}}>Details for {node}</h1>
+							<h2 style={{marginLeft:100, marginRight:500}}>ICD-10 is the 10th revision of the International Statistical Classification of Diseases and Related Health Problems, a medical classification list by the World Health Organization.{section_desp}</h2>
+							<button style={{marginLeft:100}} onClick={onClose}>CLOSE</button>
+						  </div>
+						)
+					  }
+					})
 			}
 		}
 	}
 
 	onRightClick = (event, nodeKey) => {
 		event.preventDefault();
-		this.DetailsAlert(nodeKey, this.props.info);
+		this.DetailsAlert(nodeKey, data_jsons);
 	}
 	
 	getRoot(json) {
@@ -119,31 +135,39 @@ export default class TreeContainer extends React.PureComponent {
 	}
 
 	render() {
-		let root = this.props.activeNode ? this.getRoot(this.props.data) : this.props.data;
+		if (json.children.length > 0 ){
+			let root = this.props.activeNode ? this.getRoot(json) : json;
 
-		root = clone(root);
+			root = clone(root);
 
-		if (this.props.filter) {
-			root = this.buildSubTree(root) || root;
+			if (this.props.filter) {
+				root = this.buildSubTree(root) || root;
+			}
+
+			this.setClassName(root);
+
+			return (
+				<Tree
+					animated
+					data={root}
+					height={this.props.height}
+					width={this.props.width}
+					gProps={{
+						className: 'node',
+						onClick: this.handleClick,
+						onContextMenu: this.onRightClick
+					}}
+					textProps={{
+						dy: 3.5
+					}}
+					steps={30}/>);
+		}else{
+			return (
+				<div style={{color:'white', marginTop: 20}}>
+					Please upload file to display the tree.
+				</div>
+			);
 		}
-
-		this.setClassName(root);
-
-		return (
-			<Tree
-				animated
-				data={root}
-				height={this.props.height}
-				width={this.props.width}
-				gProps={{
-					className: 'node',
-					onClick: this.handleClick,
-					onContextMenu: this.onRightClick
-				}}
-				textProps={{
-					dy: 3.5
-				}}
-				steps={30}/>);
 	}
 }
 

@@ -8,7 +8,6 @@ export default {
 		name: 'B',
 		children: [{
 			name: 'B01',
-			details: 'This is detail for BO1',
 			children: [{
 				name: 'B01.0',
 				children: [{
