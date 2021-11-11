@@ -1,0 +1,23 @@
+# build docker image
+docker build -t react-docker:1.0.0-dev .
+
+# check docker images 
+docker images
+
+# run docker image
+docker run --rm -it --name web -p 3000:3000 react-docker:1.0.0-dev
+
+# run docker image and map changes from local to container
+docker run --rm -it -name web -p 3000:3000 -v $(pwd):/code react-docker:1.0.0-dev
+
+# check running container 
+docker ps 
+
+# execude inside the container 
+docker exec -it web bash
+
+# exit container 
+exit
+
+# stop and remove containner
+docker --rm
